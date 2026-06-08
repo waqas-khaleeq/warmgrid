@@ -29,8 +29,8 @@ export default function Setup() {
         }
       })
       .catch(() => {
-        // Can't reach backend — show error
-        setError('Cannot connect to the server. Make sure the backend is running.')
+        setAllowed(true) // show form anyway — let the submit reveal the real error
+        setError('Warning: Cannot verify server status. Proceed if this is a fresh deployment.')
       })
       .finally(() => setChecking(false))
   }, [navigate])

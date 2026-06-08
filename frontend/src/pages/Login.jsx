@@ -26,12 +26,15 @@ export default function Login() {
       navigate('/', { replace: true })
     } catch (err) {
       const msg = err.response?.data?.detail
-      if (err.response?.status === 401) {
+      if (!err.response) {
+        // Network error or CORS — no response received at all
+        setError('Cannot reach the server. Make sure FRONTEND_URL is set in your Render environment variables to this site\'s URL.')
+      } else if (err.response.status === 401) {
         setError('Invalid email or password.')
-      } else if (err.response?.status >= 500) {
+      } else if (err.response.status >= 500) {
         setError('Server error. Please try again in a moment.')
       } else {
-        setError(msg || 'Login failed. Check your connection.')
+        setError(msg || 'Login failed.')
       }
     } finally {
       setLoading(false)

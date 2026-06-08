@@ -54,8 +54,8 @@ async def lifespan(app: FastAPI):
                 row = r.scalar_one_or_none()
                 return int(row.setting_value) if row else int(d)
 
-            send_start = await get_s("send_hour_start", 7)
-            send_end = await get_s("send_hour_end", 11)
+            send_start    = await get_s("send_hour_start", 7)
+            send_end      = await get_s("send_hour_end", 11)
             imap_interval = await get_s("imap_poll_interval_minutes", 120)
             health_interval = await get_s("health_check_interval_hours", 24)
     except Exception:
@@ -69,12 +69,20 @@ async def lifespan(app: FastAPI):
     scheduler.shutdown(wait=False)
 
 
-# Build allowed origins list
+# ---------------------------------------------------------------------------
+# CORS — build allowed origins list
+# Always allow localhost for local dev.
+# In production set FRONTEND_URL=https://yourapp.vercel.app in Render env vars.
+# If CORS_ALLOW_ALL=true is set, allow every origin (useful while debugging).
+# ---------------------------------------------------------------------------
+_allow_all = os.getenv("CORS_ALLOW_ALL", "false").lower() == "true"
+
 _origins = [
     "http://localhost:5173",
     "http://localhost:3000",
     "http://127.0.0.1:5173",
 ]
+
 _frontend_url = os.getenv("FRONTEND_URL", "").strip().rstrip("/")
 if _frontend_url:
     _origins.append(_frontend_url)
@@ -83,8 +91,8 @@ app = FastAPI(title="WarmGrid API", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=_origins,
-    allow_credentials=True,
+    allow_origins=["*"] if _allow_all else _origins,
+    allow_credentials=not _allow_all,   # credentials can't be used with wildcard
     allow_methods=["*"],
     allow_headers=["*"],
 )
