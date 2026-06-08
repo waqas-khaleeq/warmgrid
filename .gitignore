@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+backend/venv/
+backend/env/
+venv/
+env/
+
+# Environment files — NEVER commit these (contain secrets)
+backend/.env
+.env
+*.env
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+backend/warmgrid.db
+
+# Alembic
+backend/alembic/versions/
+
+# Node
+frontend/node_modules/
+node_modules/
+
+# Frontend build output
+frontend/dist/
+frontend/.vite/
+
+# pnpm
+frontend/pnpm-lock.yaml
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Fly.io
+.fly/
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/

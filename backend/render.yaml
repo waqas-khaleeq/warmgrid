@@ -2,17 +2,18 @@ services:
   - type: web
     name: warmgrid-backend
     runtime: python
+    pythonVersion: "3.11.0"
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     plan: free
     envVars:
       - key: DATABASE_URL
-        sync: false          # You will paste your Neon PostgreSQL URL here
+        sync: false
       - key: SECRET_KEY
-        generateValue: true  # Render auto-generates this
+        generateValue: true
       - key: ENCRYPTION_KEY
-        sync: false          # You will paste your Fernet key here
+        sync: false
       - key: FRONTEND_URL
-        sync: false          # You will paste your Vercel URL here
+        sync: false
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: "3.11.0"
